@@ -458,7 +458,6 @@
   var NOTIFICATION_CLICKED = 'Notification Clicked';
   var FIRE_PUSH_UNREGISTERED = 'WZRK_FPU';
   var PUSH_SUBSCRIPTION_DATA = 'WZRK_PSD'; // PUSH SUBSCRIPTION DATA FOR REGISTER/UNREGISTER TOKEN
-
   var SYSTEM_EVENTS = ['Stayed', 'UTM Visited', 'App Launched', 'Notification Sent', NOTIFICATION_VIEWED, NOTIFICATION_CLICKED];
 
   var isString = function isString(input) {
@@ -3221,6 +3220,7 @@
     };
 
     var renderFooterNotification = function renderFooterNotification(targetingMsgJson) {
+      console.log('Inside Render Footer Notification');
       var campaignId = targetingMsgJson.wzrk_id.split('_')[0];
       var displayObj = targetingMsgJson.display;
 
@@ -3383,6 +3383,14 @@
           setupClickUrl(onClick, targetingMsgJson, contentDiv, divId, legacy);
         };
       }
+
+      window.addEventListener('message', onMessageReceived);
+    };
+
+    var onMessageReceived = function onMessageReceived(event) {
+      console.log(event); // setTimeout(function () {
+      //   console.log(event)
+      // }, 3000)
     };
 
     var _callBackCalled = false;
