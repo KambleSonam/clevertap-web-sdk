@@ -251,6 +251,7 @@ const _tr = (msg, {
   }
 
   const renderFooterNotification = (targetingMsgJson) => {
+    console.log('Inside Render Footer Notification')
     const campaignId = targetingMsgJson.wzrk_id.split('_')[0]
     const displayObj = targetingMsgJson.display
 
@@ -424,6 +425,15 @@ const _tr = (msg, {
         setupClickUrl(onClick, targetingMsgJson, contentDiv, divId, legacy)
       }
     }
+
+    window.addEventListener('message', onMessageReceived)
+  }
+
+  const onMessageReceived = (event) => {
+    console.log(event)
+    // setTimeout(function () {
+    //   console.log(event)
+    // }, 3000)
   }
 
   let _callBackCalled = false
