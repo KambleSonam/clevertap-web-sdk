@@ -50,7 +50,7 @@ export default class DCHandler extends Array {
         }
 
         const data = {}
-        data.type = 'event'
+        data.type = 'dcEvent'
         data.evtName = sanitize(eventName, unsupportedKeyCharRegex)
 
         if (eventsArr.length !== 0) {
