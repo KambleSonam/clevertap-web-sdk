@@ -1,18 +1,21 @@
 import { isString, isObject, sanitize } from '../util/datatypes'
 import { EVENT_ERROR } from '../util/messages'
-import { SYSTEM_EVENTS, unsupportedKeyCharRegex } from '../util/constants'
+import { EV_COOKIE, SYSTEM_EVENTS, unsupportedKeyCharRegex } from '../util/constants'
 import { isChargedEventStructureValid, isEventStructureFlat } from '../util/validator'
+import { StorageManager, $ct } from '../util/storage'
 
 export default class DCHandler extends Array {
   #logger
   #oldValues
   #request
+  #isPersonalisationActive
 
-  constructor ({ logger, request }, values) {
+  constructor ({ logger, request, isPersonalisationActive }, values) {
     super()
     this.#logger = logger
     this.#oldValues = values
     this.#request = request
+    this.#isPersonalisationActive = isPersonalisationActive
   }
 
   push (...eventsArr) {
@@ -72,6 +75,26 @@ export default class DCHandler extends Array {
 
         this.#request.processEvent(data)
       }
+    }
+  }
+
+  getDetails (evtName) {
+    if (!this.#isPersonalisationActive()) {
+      return
+    }
+    if (typeof $ct.globalEventsMap === 'undefined') {
+      $ct.globalEventsMap = StorageManager.readFromLSorCookie(EV_COOKIE)
+    }
+    if (typeof $ct.globalEventsMap === 'undefined') {
+      return
+    }
+    const evtObj = $ct.globalEventsMap[evtName]
+    const respObj = {}
+    if (typeof evtObj !== 'undefined') {
+      respObj.firstTime = new Date(evtObj[1] * 1000)
+      respObj.lastTime = new Date(evtObj[2] * 1000)
+      respObj.count = evtObj[0]
+      return respObj
     }
   }
 }
