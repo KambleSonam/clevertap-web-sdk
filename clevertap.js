@@ -458,6 +458,7 @@
   var NOTIFICATION_CLICKED = 'Notification Clicked';
   var FIRE_PUSH_UNREGISTERED = 'WZRK_FPU';
   var PUSH_SUBSCRIPTION_DATA = 'WZRK_PSD'; // PUSH SUBSCRIPTION DATA FOR REGISTER/UNREGISTER TOKEN
+
   var SYSTEM_EVENTS = ['Stayed', 'UTM Visited', 'App Launched', 'Notification Sent', NOTIFICATION_VIEWED, NOTIFICATION_CLICKED];
 
   var isString = function isString(input) {
