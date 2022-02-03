@@ -1,7 +1,7 @@
 import { isString, isObject, sanitize } from '../util/datatypes'
 import { EVENT_ERROR } from '../util/messages'
-import { EV_COOKIE, SYSTEM_EVENTS, unsupportedKeyCharRegex } from '../util/constants'
-import { isChargedEventStructureValid, isEventStructureFlat } from '../util/validator'
+import { EV_COOKIE, DIRECT_CALL_EVENTS, unsupportedKeyCharRegex } from '../util/constants'
+// import { isChargedEventStructureValid, isEventStructureFlat } from '../util/validator'
 import { StorageManager, $ct } from '../util/storage'
 
 export default class DCHandler extends Array {
@@ -44,9 +44,9 @@ export default class DCHandler extends Array {
           this.#logger.reportError(510, eventName + '... length exceeded 1024 chars. Trimmed.')
         }
 
-        if (SYSTEM_EVENTS.includes(eventName)) {
-          this.#logger.reportError(513, eventName + ' is a restricted system event. It cannot be used as an event name.')
-          continue
+        if (!DIRECT_CALL_EVENTS.includes(eventName)) {
+          this.#logger.reportError(513, eventName + ' is not a direct call event')
+          return
         }
 
         const data = {}
@@ -57,20 +57,21 @@ export default class DCHandler extends Array {
           const eventObj = eventsArr.shift()
           if (!isObject(eventObj)) {
             eventsArr.unshift(eventObj)
-          } else {
-            if (eventName === 'Charged') {
-              if (!isChargedEventStructureValid(eventObj, this.#logger)) {
-                this.#logger.reportError(511, 'Charged event structure invalid. Not sent.')
-                continue
-              }
-            } else {
-              if (!isEventStructureFlat(eventObj)) {
-                this.#logger.reportError(512, eventName + ' event structure invalid. Not sent.')
-                continue
-              }
-            }
-            data.evtData = eventObj
           }
+          // else {
+          //   if (eventName === 'Charged') {
+          //     if (!isChargedEventStructureValid(eventObj, this.#logger)) {
+          //       this.#logger.reportError(511, 'Charged event structure invalid. Not sent.')
+          //       continue
+          //     }
+          //   } else {
+          //     if (!isEventStructureFlat(eventObj)) {
+          //       this.#logger.reportError(512, eventName + ' event structure invalid. Not sent.')
+          //       continue
+          //     }
+          //   }
+          //   data.evtData = eventObj
+          // }
         }
 
         this.#request.processEvent(data)
