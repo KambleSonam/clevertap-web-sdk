@@ -43,9 +43,6 @@ export const NOTIFICATION_CLICKED = 'Notification Clicked'
 export const FIRE_PUSH_UNREGISTERED = 'WZRK_FPU'
 export const PUSH_SUBSCRIPTION_DATA = 'WZRK_PSD' // PUSH SUBSCRIPTION DATA FOR REGISTER/UNREGISTER TOKEN
 
-export const CALL_CONNECTED = 'Call Connected'
-export const CALL_DECLINED = 'Call Declined'
-
 export const SYSTEM_EVENTS = [
   'Stayed',
   'UTM Visited',
@@ -53,4 +50,10 @@ export const SYSTEM_EVENTS = [
   'Notification Sent',
   NOTIFICATION_VIEWED,
   NOTIFICATION_CLICKED
+]
+
+export const DIRECT_CALL_EVENTS = [
+  'DCOutgoing',
+  'DCIncoming',
+  'DCEnd'
 ]
